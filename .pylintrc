@@ -8,6 +8,7 @@ disable=
       R0903, # too-few-public-methods
       W0719, # broad-exception-raised
       E0015, # unrecognized-option
+      W0311, # bad-indentation
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists

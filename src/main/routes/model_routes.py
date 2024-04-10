@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from src.views.http_types.http_request import HttpRequest
-from src.views.img_received import ImgReceivedView
+from src.views.img_received_view import ImgReceivedView
 
 model_routes_bp = Blueprint('model_routes', __name__)
 
