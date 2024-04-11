@@ -8,4 +8,3 @@ def handle_errors(error: Exception) -> HttpResponse:
             "detail": str(error)
         }]}
     )
-    

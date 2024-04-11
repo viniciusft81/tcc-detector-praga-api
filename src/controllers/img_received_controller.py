@@ -1,7 +1,8 @@
 from typing import Dict
 from io import BytesIO
 from PIL import Image
-import dill
+import dill 
+import logging
 from fastai.vision.learner import load_learner
 from src.drivers.img_handler import ImgHandler
 
@@ -14,6 +15,7 @@ class ImgReceivedController:
  
 	def predict_image(self, img_base64) -> Dict:
 		img_decoder = ImgHandler()
+		logging.basicConfig(level=logging.INFO)
   
 		#carrega o modelo
 		self.__load_model()
@@ -30,9 +32,12 @@ class ImgReceivedController:
 			#show_image(img)
 			#realiza a predição
 			pred_class, pred_idx, pred_outputs = self.__learn.predict(resize_img)
-			print("Predição realizada com sucesso:", pred_class, pred_idx, pred_outputs)
+			logging.info("Predição realizada com sucesso: %s, %s, %s", pred_class, pred_idx, pred_outputs)
+   
+			prob_one, prob_two= float(pred_outputs[0]), float(pred_outputs[1])
+			logging.info("probs=> %s, %s", prob_one, prob_two)
 		
-			return self.__format_response(pred_class, pred_outputs)
+			return self.__format_response(pred_class, prob_one, prob_two)
 		except Exception as e:
 			print(f"Erro ao realizar a predição: {e}")
 			return {
@@ -44,10 +49,11 @@ class ImgReceivedController:
 	def __load_model(self):
 		self.__learn = load_learner("model_soy.pkl", pickle_module=dill)
  	
-	def __format_response(self, prediction_class, percentage) -> Dict:
+	def __format_response(self, prediction_class, prediction_prob1, prediction_prob2) -> Dict:
 		return [{
 			"data": {
 				"pred_class": str(prediction_class),
-				"pred_prob": [float(prob) for prob in percentage]
+				"pred_prob1": prediction_prob1, 
+    			"pred_prob2": prediction_prob2
 			}
 		}]
