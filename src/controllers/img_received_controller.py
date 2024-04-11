@@ -1,8 +1,8 @@
 from typing import Dict
 from io import BytesIO
+import logging
 from PIL import Image
 import dill 
-import logging
 from fastai.vision.learner import load_learner
 from src.drivers.img_handler import ImgHandler
 
