@@ -13,6 +13,7 @@ class ImgReceivedController:
 	'''
 	def __init__(self):
 		self.__learn = None
+		self.__model = "model_soy_v2.pkl"
  
 	def predict_image(self, img_base64) -> Dict:
 		img_decoder = ImgHandler()
@@ -44,7 +45,7 @@ class ImgReceivedController:
 				return self.__format_response(pred_class, prob_prague, prob_healthy)
 			else:
 				return {
-					"message": "Planta não identificada"
+					"message": "Soja não identificada"
 				}
 		except Exception as e:
 			print(f"Erro ao realizar a predição: {e}")
@@ -55,7 +56,7 @@ class ImgReceivedController:
 			}
 	
 	def __load_model(self):
-		self.__learn = load_learner("model_soy.pkl", pickle_module=dill)
+		self.__learn = load_learner(self.__model, pickle_module=dill)
  	
 	def __format_response(self, prediction_class, prediction_prob_prague, prediction_prob_healthy) -> Dict:
 		return {

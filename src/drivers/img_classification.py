@@ -12,7 +12,6 @@ def img_classification(image):
 
     # perform inference
     results = model.predict(image)
-    # observe results
     print("=========================================")
     result = results[0]
     categories = result.boxes.cls
@@ -20,6 +19,10 @@ def img_classification(image):
     print("=========================================")
     
     if len(categories) > 0:
-        return True
-    else: return False
+        if 5 in categories:
+            return True
+        else:
+            return False
+    else:
+        return False
         
