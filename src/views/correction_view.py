@@ -12,7 +12,6 @@ class CorrectionView:
         
         body = http_request.body
         data_correction = body
-        print(data_correction)
     
         #Lógica de regra de negócio
         formatted_response = correction_controller.store_correction(data_correction)

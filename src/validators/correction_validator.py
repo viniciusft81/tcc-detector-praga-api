@@ -13,7 +13,8 @@ def correction_result_received_validator(request: any) -> None:
                         "base64": {"type": "string", "required": True, "empty": False}
                 }
             },
-            "label": {"type": "string", "required": True, "empty": False}
+            "result": {"type": "string", "required": True},
+            "result_correction": {"type": "string", "required": True}
         }
     }
     }) 

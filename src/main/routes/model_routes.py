@@ -8,7 +8,13 @@ from src.validators.correction_validator import correction_result_received_valid
 
 model_routes_bp = Blueprint('model_routes', __name__)
 
-@model_routes_bp.route('/predict', methods=["POST"])
+@model_routes_bp.route('/', methods=["GET"])
+def hello():
+    response = "API SojaInspect is running!"
+    
+    return jsonify(response), 200
+
+@model_routes_bp.route('/predictions', methods=["POST"])
 def predict():
     response = None
     try:
