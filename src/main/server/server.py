@@ -3,6 +3,6 @@ from flask_cors import CORS
 from src.main.routes.model_routes import model_routes_bp
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 app.register_blueprint(model_routes_bp)
