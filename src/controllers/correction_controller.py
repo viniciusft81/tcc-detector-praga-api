@@ -17,13 +17,13 @@ class CorrectionController:
             
             return self.__format_response()
         except Exception as e:
-            print("Erro ao armazenar a correção", e)
+            print("Erro ao armazenar a correção!", e)
             return {
-                "message": "Erro ao armazenar a correção"
+                "message": "Erro ao armazenar a correção!"
             }
     
     def __format_response(self) -> Dict:
         return {
-            "message": "Correção armazenada com sucesso"
+            "message": "Correção armazenada com sucesso!"
         }
         
