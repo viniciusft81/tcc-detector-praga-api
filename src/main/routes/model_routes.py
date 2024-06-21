@@ -29,7 +29,7 @@ def predict():
     
     return jsonify(response.body), response.status_code
 
-@model_routes_bp.route('/result_correction', methods=["POST"])
+@model_routes_bp.route('/feedback', methods=["POST"])
 def result_correction():
     response = None
     try:
