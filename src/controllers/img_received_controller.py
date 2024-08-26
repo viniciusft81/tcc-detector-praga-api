@@ -13,7 +13,7 @@ class ImgReceivedController:
 	'''
 	def __init__(self):
 		self.__learn = None
-		self.__model = "model_soy_v2.pkl"
+		self.__model = "model_soy_v4.pkl"
  
 	def predict_image(self, img_base64) -> Dict:
 		img_decoder = ImgHandler()
@@ -38,15 +38,12 @@ class ImgReceivedController:
 				#realiza a predição
 				pred_class, pred_idx, pred_outputs = self.__learn.predict(resize_img)
 				logging.info("Predição realizada com sucesso: %s, %s, %s", pred_class, pred_idx, pred_outputs)
-   
-				prob_prague, prob_healthy = float(pred_outputs[0]), float(pred_outputs[1])
-				logging.info("probs=> %s, %s", prob_prague, prob_healthy)
-		
-				return self.__format_response(pred_class, prob_prague, prob_healthy)
-			else:
-				return {
-					"message": "Soja não identificada"
-				}
+
+				classes = self.__learn.dls.vocab
+				class_probs = {cls: prob for cls, prob in zip(classes, pred_outputs)}
+
+				return self.__format_response(pred_class, class_probs)
+			return {"message": "Soja não identificada"}
 		except Exception as e:
 			print(f"Erro ao realizar a predição: {e}")
 			return {
@@ -58,9 +55,12 @@ class ImgReceivedController:
 	def __load_model(self):
 		self.__learn = load_learner(self.__model, pickle_module=dill)
  	
-	def __format_response(self, prediction_class, prediction_prob_prague, prediction_prob_healthy) -> Dict:
+	def __format_response(self, pred_class, prediction_probs) -> Dict:
 		return {
-			"pred_class": str(prediction_class),
-			"prague_prob": prediction_prob_prague, 
-    		"healthy_prob": prediction_prob_healthy
+			"pred_class": str(pred_class),
+			"lagarta_das_vagens_prob": float(prediction_probs.get("Lagarta_das_vagens")),
+			"lagarta_soja_prob": float(prediction_probs.get("Lagarta_soja")),
+			"percevejo_soja_prob": float(prediction_probs.get("Percevejo_soja")),
+			"healthy_prob": float(prediction_probs.get("Saudavel")),
+			"vaquinha_prob": float(prediction_probs.get("Vaquinha_verde_amarelo"))
 		}
